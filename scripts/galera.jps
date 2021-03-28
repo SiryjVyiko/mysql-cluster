@@ -79,7 +79,7 @@ actions:
         cmd[${this.id}]: cd /etc/mysql/conf.d && wget ${globals.CUSTOM_CONF} &>> /var/log/run.log
         user: root
     - cmd[${this.id}]: |-
-        wget ${globals.PATH}/scripts/mysql -O /etc/init.d/mysql; chkconfig mysql on
+        wget ${globals.PATH}/scripts/mariadb-systemd-override.conf -O /etc/systemd/system/mariadb.service.d/override.conf; systemctl daemon-reload;
         wget ${globals.PATH}/configs/galera-myisam.cnf -O ${globals.GALERA_CONF} &>> /var/log/run.log
       user: root
         
