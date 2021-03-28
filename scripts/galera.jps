@@ -25,7 +25,7 @@ onAfterScaleOut[sqldb]:
   - forEach(event.response.nodes):
     - setupInstance:
         id: "${@i.id}"
-    - cmd[${@i.id}]: "/etc/init.d/mysql restart"
+    - cmd[${@i.id}]: "jem service restart"
       user: root
 
 onAfterScaleIn[sqldb]:
@@ -72,7 +72,7 @@ actions:
         cmd[${this.id}]: cd /etc/mysql/conf.d && wget ${globals.CUSTOM_CONF} &>> /var/log/run.log
         user: root
     - cmd[${this.id}]: |-
-        wget ${globals.PATH}/scripts/mysql -O /etc/init.d/mysql
+        wget ${globals.PATH}/scripts/mariadb-systemd-override.conf -O /etc/systemd/system/mariadb.service.d/override.conf; systemctl daemon-reload;
         wget ${globals.PATH}/configs/galera-myisam.cnf -O ${globals.GALERA_CONF} &>> /var/log/run.log
       user: root
         
