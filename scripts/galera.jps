@@ -64,7 +64,7 @@ onInstall:
   - setupSeeds
   - setupInstance:
       id: "sqldb"
-  - cmd[${nodes.sqldb.master.id}]: "jem service stop; sleep 5; pkill -9 mysql; pkill -9 mariadb; galera_new_cluster; [ -e /etc/systemd/system/mariadb.service.d ] && wget ${globals.PATH}/scripts/mariadb-systemd-override.conf -O /etc/systemd/system/mariadb.service.d/bootstrap.conf; echo '/etc/systemd/system/mariadb.service.d/bootstrap.conf' >> /etc/jelastic/redeploy.conf; systemctl daemon-reload;"
+  - cmd[${nodes.sqldb.master.id}]: "jem service stop; sleep 5; pkill -9 mysql; pkill -9 mariadb; galera_new_cluster"
     user: root
   - forEach(n:nodes.sqldb):
       if (!${@n.ismaster}):
@@ -117,6 +117,5 @@ actions:
         [ -f /var/lib/mysql/grastate.dat ] && rm -f /var/lib/mysql/grastate.dat
         [ -f /var/lib/mysql/gvwstate.dat ] && rm -f /var/lib/mysql/gvwstate.dat
         [ -f /var/lib/mysql/galera.cache ] && rm -f /var/lib/mysql/galera.cache
-        [ -f /etc/systemd/system/mariadb.service.d/bootstrap.conf ] && { rm -f /etc/systemd/system/mariadb.service.d/bootstrap.conf; systemctl daemon-reload; }
         jem service stop; pkill -9 mysql; pkill -9 mariadb; jem service start
       user: root 
