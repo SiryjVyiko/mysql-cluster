@@ -117,6 +117,6 @@ actions:
         [ -f /var/lib/mysql/grastate.dat ] && rm -f /var/lib/mysql/grastate.dat
         [ -f /var/lib/mysql/gvwstate.dat ] && rm -f /var/lib/mysql/gvwstate.dat
         [ -f /var/lib/mysql/galera.cache ] && rm -f /var/lib/mysql/galera.cache
-        [ -f /etc/systemd/system/mariadb.service.d/bootstrap.conf ] && rm -f /etc/systemd/system/mariadb.service.d/bootstrap.conf
+        [ -f /etc/systemd/system/mariadb.service.d/bootstrap.conf ] && { rm -f /etc/systemd/system/mariadb.service.d/bootstrap.conf; systemctl daemon-reload; }
         jem service stop; pkill -9 mysql; pkill -9 mariadb; jem service start
       user: root 
