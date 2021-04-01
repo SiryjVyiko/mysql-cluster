@@ -1,0 +1,7 @@
+i#!/bin/bash
+
+oom_score_adj_level="-700"
+
+if test ! -z "$(pgrep maria)"; then
+    echo $oom_score_adj_level >  /proc/$(pgrep maria|tail -n 1)/oom_score_adj 2>&1;
+fi
