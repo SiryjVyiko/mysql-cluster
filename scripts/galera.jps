@@ -119,5 +119,5 @@ actions:
         [ -f /var/lib/mysql/grastate.dat ] && rm -f /var/lib/mysql/grastate.dat
         [ -f /var/lib/mysql/gvwstate.dat ] && rm -f /var/lib/mysql/gvwstate.dat
         [ -f /var/lib/mysql/galera.cache ] && rm -f /var/lib/mysql/galera.cache
-        jem service stop; pkill -9 mysql; pkill -9 mariadb; jem service start
+        pkill -9 mysql; pkill -9 mariadb; jem service start
       user: root
