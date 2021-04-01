@@ -73,7 +73,7 @@ actions:
         user: root
     - cmd[${this.id}]: |-
         [ -e /etc/systemd/system/mariadb.service.d ] && wget ${globals.PATH}/scripts/mariadb-systemd-override.conf -O /etc/systemd/system/mariadb.service.d/bootstrap.conf || wget ${globals.PATH}/scripts/mysql -O /etc/init.d/mysql;
-        wget ${globals.PATH}/configs/galera-myisam.cnf -O ${globals.GALERA_CONF} &>> /var/log/run.log; systemctl daemon-reload;
+        wget ${globals.PATH}/configs/galera-myisam.cnf -O ${globals.GALERA_CONF} &>> /var/log/run.log; wget ${globals.PATH}/scripts/setMySQLOOMScore -O /usr/local/sbin/setMySQLOOMScore; chmod +x /usr/local/sbin/setMySQLOOMScore; systemctl daemon-reload;
       user: root
         
   setupUser:
@@ -110,5 +110,5 @@ actions:
         [ -f /var/lib/mysql/grastate.dat ] && rm -f /var/lib/mysql/grastate.dat
         [ -f /var/lib/mysql/gvwstate.dat ] && rm -f /var/lib/mysql/gvwstate.dat
         [ -f /var/lib/mysql/galera.cache ] && rm -f /var/lib/mysql/galera.cache
-        jem service stop; pkill -9 mysql; pkill -9 mariadb; jem service start
+        pkill -9 mysql; pkill -9 mariadb; jem service start
       user: root
