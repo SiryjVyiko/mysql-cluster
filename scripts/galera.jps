@@ -62,6 +62,7 @@ onInstall:
   - forEach(n:nodes.sqldb):
       if (!${@n.ismaster}):
         cmd[${@n.id}]: "jem service restart"
+        user: root
         
 actions:
   initialSetup:
