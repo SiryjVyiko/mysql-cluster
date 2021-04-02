@@ -1,4 +1,4 @@
-i#!/bin/bash
+#!/bin/bash
 
 oom_score_adj_level="-700"
 
