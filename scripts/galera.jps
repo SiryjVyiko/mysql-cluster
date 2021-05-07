@@ -51,14 +51,14 @@ onBeforeStop:
       env.control.StopNode [${@i.id}]
 
 onBeforeRestartNode[sqldb]:
-  - forEach(i:nodes.sqldb):
-      cmd [${@i.id}]: sudo jem service restart
+  - restartNodesInOrder
   - stopEvent:
       type: success
       message: Galera cluster successfully restarted
 
 onInstall:
   - resetCluster
+  - restartNodesInOrder
   - initialSetup:
       id: "sqldb"
   - setupSeeds
@@ -119,5 +119,9 @@ actions:
         [ -f /var/lib/mysql/grastate.dat ] && rm -f /var/lib/mysql/grastate.dat
         [ -f /var/lib/mysql/gvwstate.dat ] && rm -f /var/lib/mysql/gvwstate.dat
         [ -f /var/lib/mysql/galera.cache ] && rm -f /var/lib/mysql/galera.cache
-        pkill -9 mysql; pkill -9 mariadb; jem service start
+        pkill -9 mysql; pkill -9 mariadb;
       user: root
+
+  restartNodesInOrder:
+    - forEach(i:nodes.sqldb):
+        cmd [${@i.id}]: sudo jem service restart
