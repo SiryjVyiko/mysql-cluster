@@ -64,7 +64,7 @@ onInstall:
   - setupSeeds
   - setupInstance:
       id: "sqldb"
-  - cmd[${nodes.sqldb.master.id}]: "jem service stop; sleep 5; pkill -9 mysql; pkill -9 mariadb; galera_new_cluster"
+  - cmd[${nodes.sqldb.master.id}]: "jem service stop; sleep 5; pkill -9 mysql; pkill -9 mariadb; service httpd start; galera_new_cluster"
     user: root
   - forEach(n:nodes.sqldb):
       if (!${@n.ismaster}):
@@ -115,11 +115,11 @@ actions:
     
   resetCluster:
     - cmd[sqldb]: |-
-        [ -f ${globals.GALERA_CONF} ] && rm -f ${globals.GALERA_CONF} || true;
-        [ -f /var/lib/mysql/grastate.dat ] && rm -f /var/lib/mysql/grastate.dat || true;
-        [ -f /var/lib/mysql/gvwstate.dat ] && rm -f /var/lib/mysql/gvwstate.dat || true;
-        [ -f /var/lib/mysql/galera.cache ] && rm -f /var/lib/mysql/galera.cache || true;
-        pgrep mysql 1>/dev/null && pkill -9 mysql || true;
+        [ -f ${globals.GALERA_CONF} ] && rm -f ${globals.GALERA_CONF};
+        [ -f /var/lib/mysql/grastate.dat ] && rm -f /var/lib/mysql/grastate.dat;
+        [ -f /var/lib/mysql/gvwstate.dat ] && rm -f /var/lib/mysql/gvwstate.dat;
+        [ -f /var/lib/mysql/galera.cache ] && rm -f /var/lib/mysql/galera.cache;
+        pgrep mysql 1>/dev/null && pkill -9 mysql;
         pgrep mariadb 1>/dev/null && pkill -9 mariadb || true
       user: root
 
