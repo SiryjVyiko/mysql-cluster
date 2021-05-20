@@ -115,11 +115,12 @@ actions:
     
   resetCluster:
     - cmd[sqldb]: |-
-        [ -f ${globals.GALERA_CONF} ] && rm -f ${globals.GALERA_CONF}
-        [ -f /var/lib/mysql/grastate.dat ] && rm -f /var/lib/mysql/grastate.dat
-        [ -f /var/lib/mysql/gvwstate.dat ] && rm -f /var/lib/mysql/gvwstate.dat
-        [ -f /var/lib/mysql/galera.cache ] && rm -f /var/lib/mysql/galera.cache
-        pkill -9 mysql; pkill -9 mariadb;
+        [ -f ${globals.GALERA_CONF} ] && rm -f ${globals.GALERA_CONF} || true;
+        [ -f /var/lib/mysql/grastate.dat ] && rm -f /var/lib/mysql/grastate.dat || true;
+        [ -f /var/lib/mysql/gvwstate.dat ] && rm -f /var/lib/mysql/gvwstate.dat || true;
+        [ -f /var/lib/mysql/galera.cache ] && rm -f /var/lib/mysql/galera.cache || true;
+        pgrep mysql 1>/dev/null && pkill -9 mysql || true;
+        pgrep mariadb 1>/dev/null && pkill -9 mariadb || true
       user: root
 
   restartNodesInOrder:
